@@ -13,6 +13,16 @@
     margin: 0;
     margin-bottom: .8rem;
 }
-.SignupSignin-wrapper .title span{
+.title span{
     color: var(--theme);
+}
+.p-login{
+    text-align:center;
+    font-weight: 600;
+    margin:0;
+    font-size: .8rem;
+    cursor: pointer;
+}
+.p-login:hover{
+    color:rgb(132, 132, 243);
 }
