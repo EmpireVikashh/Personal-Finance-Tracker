@@ -11,7 +11,7 @@ function SignupSigninComponent() {
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("false");
   
   function signupWithEmail(){
     setLoading(true);
@@ -35,7 +35,7 @@ function SignupSigninComponent() {
           setEmail("");
           setPassword("");
           setConfirmPassword("");
-          
+          createDoc(user)
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -54,12 +54,14 @@ function SignupSigninComponent() {
       toast.error("All feilds are mandatory")
       setLoading(false)
     }
+  }
 
+  function createDoc(){
+    // make sure that the doc with the uid does'nt exist
+    // Create the doc
   }
 
   return (
- 
-
     <div className='SignupSignin-wrapper'>
       <h2 className='title'>
         Signup on <span>Financely.</span>
@@ -70,9 +72,9 @@ function SignupSigninComponent() {
         <Input label={"Email"} state={email} setState={setEmail} placeholder={"Jhon@gmail.com"} />
         <Input label={"Password"} state={Password} setState={setPassword} placeholder={"123#abc"} type="Password" />
         <Input label={"Confirm Password"} state={confirmPassword} setState={setConfirmPassword} placeholder={"123#abc"} type="Password"/>
-        <Button text="Signup Using Email and Password" onClick={signupWithEmail} />
+        <Button text="Signup Using Email and Password" loading={loading} onClick={signupWithEmail} />
         <p style={{textAlign:"center"}} >or</p>
-        <Button text="Signup Using with Google" onClick={signupWithEmail} blue="true"/>
+        <Button text="Signup Using with Google" loading={loading}  onClick={signupWithEmail} blue="true"/>
       </form>
     </div>
   )
