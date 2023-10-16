@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import { toast } from 'react-toastify';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
+import { doc, getDoc, setDoc } from "firebase/firestore"; 
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 
-function SignupSigninComponent() {
+const SignupSigninComponent = () => { // Main function
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -68,6 +69,7 @@ function SignupSigninComponent() {
       setPassword("");
       console.log(user)
       setLoading(false)
+      // createDoc(user)
       navigate("/dashboard");
     })
     .catch((error) => {
@@ -82,12 +84,42 @@ function SignupSigninComponent() {
     toast.error("All feilds are mandatory")
     setLoading(false)
     }  
-  }
+  }//loginUsingEmail ending here
 
 
-  function createDoc(user) {
+  async function createDoc(user) {
     // make sure that the doc with the uid does'nt exist
     // Create the doc
+    setLoading(true)
+    if(!user)return;
+
+
+    const userRef = doc(db, "users", user.uid);
+    const userData= await getDoc(userRef);
+    const createdAt = new Date();
+    console.log(createdAt);
+
+    if(!userData.exists()){ // if user does'nt exist then do it 
+      try{
+        await setDoc(doc(db, "users", user.uid), {
+          name:user.displayName ? user.displayName : name,
+          email:user.email,
+          photoURL:user.photoURL ? user.photoURL : "",
+          createdAt:createdAt,
+          Password:Password
+        });
+        toast.success("Doc Created");
+        setLoading(false)
+      }
+      catch(e){
+        console.log(e);
+        toast.error(e.message);
+        setLoading(false)
+      }
+    }else{
+      toast.error("Doc already exist")
+      setLoading(false)
+    }
   }
 
   return (
