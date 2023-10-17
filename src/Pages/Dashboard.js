@@ -1,8 +1,11 @@
 import React from 'react'
+import Header from '../Components/Headers/Header'
 
 function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <div>
+      <Header/>
+    </div>
   )
 }
 

@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import { toast } from 'react-toastify';
-import { auth, db } from '../../firebase';
+import { auth, db, provider } from '../../firebase';
 import { doc, getDoc, setDoc } from "firebase/firestore"; 
-import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword,signInWithEmailAndPassword } from 'firebase/auth';// for email
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";// for google
 import { useNavigate } from "react-router-dom";
 
 const SignupSigninComponent = () => { // Main function
@@ -15,8 +16,8 @@ const SignupSigninComponent = () => { // Main function
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState("false");
   const [loginForm, setLoginForm] = useState(false)
+  const navigate = useNavigate();// this is for navigate to page
 
-  const navigate = useNavigate();
 
   function signupWithEmail() {
     setLoading(true);
@@ -64,7 +65,7 @@ const SignupSigninComponent = () => { // Main function
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      toast.success("User logged in");
+      toast.success("Login Successfully");
       setEmail("");
       setPassword("");
       console.log(user)
@@ -86,6 +87,38 @@ const SignupSigninComponent = () => { // Main function
     }  
   }//loginUsingEmail ending here
 
+
+  function googleAuth(){
+   setLoading(true);
+   try{
+   signInWithPopup(auth, provider)
+  .then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+    console.log(token)
+    console.log("user>>>", user)
+    createDoc(user);
+    setLoading(false)
+    toast.success("Signup Succesfully")
+    navigate("/dashboard");
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorMessage,errorCode)
+    toast.error(errorMessage,errorCode)
+    setLoading(false)
+  });
+   }
+   catch(e){
+    toast.error(e.message)
+   }
+  }
 
   async function createDoc(user) {
     // make sure that the doc with the uid does'nt exist
@@ -117,14 +150,16 @@ const SignupSigninComponent = () => { // Main function
         setLoading(false)
       }
     }else{
-      toast.error("Doc already exist")
+      // toast.error("Doc already exist")
       setLoading(false)
     }
-  }
+  }// Create doc that is containing user basic information
+
+
 
   return (
     <>
-      {loginForm ? (
+      {loginForm ? (//for login
         <>
           <div className='SignupSignin-wrapper'>
             <h2 className='title'>
@@ -134,14 +169,14 @@ const SignupSigninComponent = () => { // Main function
               {/* Imported Input */}
               <Input label={"Email"} state={email} setState={setEmail} placeholder={"example@xyz.com"} />
               <Input label={"Password"} state={Password} setState={setPassword} placeholder={"xyz123"} type="Password" />
-              <Button text="Login Using Email and Password" loading={loading} onClick={loginUsingEmail} />
+              <Button text="Login" loading={loading} onClick={loginUsingEmail} />
               <p style={{textAlign: "center"}} >or</p>
-              <Button text="Login Using with Google" loading={loading} onClick={loginUsingEmail} blue="true" />
+              <Button text="Login Using with Google" loading={loading} onClick={googleAuth} blue="true" />
               <p className="p-login" onClick={()=>setLoginForm(!loginForm)} >Or Don't Have an Account? Click here</p>
             </form>
           </div>
         </>
-      ) : (
+      ) : (// For signup
         <div className='SignupSignin-wrapper'>
           <h2 className='title'>
             Signup on <span>Financely.</span>
@@ -153,9 +188,9 @@ const SignupSigninComponent = () => { // Main function
             <Input label={"Password"} state={Password} setState={setPassword} placeholder={"123#abc"} type="Password" />
             <Input label={"Confirm Password"} state={confirmPassword} setState={setConfirmPassword} placeholder={"123#abc"} type="Password" />
             <Button text="Signup Using Email and Password" loading={loading} onClick={signupWithEmail} />
-            <p  style={{textAlign: "center"}} >or</p>
-            <Button text="Signup Using with Google" loading={loading} onClick={signupWithEmail} blue="true" />
-            <p  className="p-login" onClick={()=>setLoginForm(!loginForm)} >Or Have an Account Already? Click here</p>
+            <p style={{textAlign: "center"}}>or</p>
+            <Button text="Signup Using with Google" loading={loading} onClick={googleAuth} blue="true"/>
+            <p className="p-login" onClick={()=>setLoginForm(!loginForm)}>Or Have an Account Already? Click here</p>
           </form>
         </div>
       )}
