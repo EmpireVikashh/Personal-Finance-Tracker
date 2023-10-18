@@ -15,7 +15,7 @@ function Header() {
       navigate("/dashboard");
     }
   
-  }, [user,loading]);
+  }, [user,loading,navigate]);
   
   
   function LogoutFunc(){
