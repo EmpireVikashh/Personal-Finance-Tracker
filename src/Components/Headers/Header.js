@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signOut } from 'firebase/auth';
-
+import userImg from "../../assets/user.svg"
 
 function Header() {
   const [user, loading] = useAuthState(auth);
@@ -37,7 +37,19 @@ function Header() {
       <p className='logo' >Finance Tracker.</p>
       {
         user && (
+          <div style={{
+            display:"flex",
+            alignItems:"center",
+            gap:"0.5rem"
+          }}>
+            <img src={user.photoURL ? user.photoURL : userImg}
+            style={{
+              height:"2rem",
+              width:"2rem",
+              borderRadius:"50%"
+            }}/>
           <p className='link' onClick={LogoutFunc}>Logout</p>
+          </div>
         )
       }
     </div>

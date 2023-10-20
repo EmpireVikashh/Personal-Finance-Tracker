@@ -11,17 +11,17 @@ function Cards({income, expenses, currentBalance, showIncomeModal,showExpenseMod
         {/* <Card className='my_card' title="Title"> */}
             <Card className='my_card'>
                 <h2>Current Balance</h2>
-                <p>${currentBalance}</p>
+                <p>{currentBalance}₹</p>
                 <Button text="Reset Balance" blue={true}/>
             </Card> 
             <Card className='my_card'>
                 <h2>Total Income</h2>
-                <p>${income}</p>
+                <p>{income}₹</p>
                 <Button text="Add Income" blue={true} onClick={showIncomeModal}/>
             </Card> 
             <Card className='my_card'>
                 <h2>Total Expenses</h2>
-                <p>${expenses}</p>
+                <p>{expenses}₹</p>
                 <Button text="Add Expenses" blue={true} onClick={showExpenseModal}/>
             </Card>
         </Row>
