@@ -9,6 +9,8 @@ import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import moment from "moment";
 import TransctionsTable from "../Components/TransactionsTable/TransctionsTable";
+import Charts from "../Components/Charts/Charts";
+import NoTransactions from "../Components/NoTransactions/NoTransactions";
 // import { Modal } from "antd";
 
 function Dashboard() {
@@ -130,6 +132,9 @@ function Dashboard() {
             showIncomeModal={showIncomeModal}
             showExpenseModal={showExpenseModal}
           />
+          {
+           transactions.length!=0? <Charts/>:<NoTransactions/>
+          }
 
           <AddIncomeModal
             isIncomeModalVisible={isIncomeModalVisible}
@@ -142,6 +147,8 @@ function Dashboard() {
             handleExpenseCancel={handleExpenseCancel}
             onFinish={onFinish}
           />
+         
+
           <TransctionsTable 
           transactions={transactions}
           />
