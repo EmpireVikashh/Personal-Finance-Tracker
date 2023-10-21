@@ -41,7 +41,16 @@ function TransctionsTable({ transactions }) {
       item.type.includes(typeFilter) 
   );
 
-  const sortedTransactions = filteredTransactions.sort((a, b) => {
+  // const sortedTransactions = filteredTransactions.sort((a, b) => {
+  //   if (sortKey === "date") {
+  //     // return new Date(a.date) - new Date(b.date);
+  //   } else if (sortKey === "amount") {
+  //     return a.amount - b.amount;
+  //   } else {
+  //     return 0;
+  //   }
+  // });
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
     if (sortKey === "date") {
       return new Date(a.date) - new Date(b.date);
     } else if (sortKey === "amount") {
@@ -50,11 +59,6 @@ function TransctionsTable({ transactions }) {
       return 0;
     }
   });
-
-//   const dataSource = sortedTransactions.map((transaction, index) => ({
-//     key: index,
-//     ...transaction,
-//   }));
 
 
   return (

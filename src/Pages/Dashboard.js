@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { addDoc, collection, getDocs, query } from "@firebase/firestore";
 import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import moment from "moment";
+// import moment from "moment";
 import TransctionsTable from "../Components/TransactionsTable/TransctionsTable";
 import Charts from "../Components/Charts/Charts";
 import NoTransactions from "../Components/NoTransactions/NoTransactions";
@@ -88,7 +88,7 @@ function Dashboard() {
         transactionsArray.push(doc.data());
       });
       setTransactions(transactionsArray);
-      console.log("trac", transactionsArray);
+      // console.log("trac", transactionsArray);
       toast.success("Transactions Fetched!");
     }
     setLoading(false);
@@ -133,7 +133,7 @@ function Dashboard() {
             showExpenseModal={showExpenseModal}
           />
           {
-           transactions.length!=0? <Charts/>:<NoTransactions/>
+           transactions.length!=0? <Charts transactions={transactions} />:<NoTransactions/>
           }
 
           <AddIncomeModal
