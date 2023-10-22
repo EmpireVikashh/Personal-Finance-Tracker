@@ -1,3 +1,19 @@
+#chart_main_div{
+    display: flex;
+    /* justify-content: space-evenly; */
+}
+
 .chart_container{
-    
+    box-shadow: 0 0 0 5px rgb(227 227 227 / 75%);
+    margin-bottom: 2rem;
+    /* WIDTH: 50% !important; */
+    height:60vh !important;
+    margin-left: 1.5rem;
+    border-radius: 9px;
+    flex:1;
+}
+
+.chart_container h2{
+    margin-bottom: 0;
+    margin-left: 0.8rem;
 }

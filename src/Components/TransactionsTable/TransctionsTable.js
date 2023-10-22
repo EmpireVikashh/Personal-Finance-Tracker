@@ -35,6 +35,7 @@ function TransctionsTable({ transactions }) {
       key: "date",
     },
   ];
+  
   let filteredTransactions = transactions.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) &&

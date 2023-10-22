@@ -1,13 +1,15 @@
 import React from 'react';
+import "./charts.css"
 import { Line } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js/auto'; // Import necessary Chart.js components
 
 function Chart({transactions}) {
   let labels = transactions.map((data)=>data.date)// for Date
   const data = transactions.map((data)=>data.amount);//for amount
-
   console.log(labels,data);
 
+  
   const myData = {
     labels: labels, // Accept only array form
     datasets: [
@@ -32,13 +34,40 @@ function Chart({transactions}) {
         beginAtZero: true,
       },
     },
+  }; // Line end
+
+  const Piedata = {
+    labels: [
+      'Red',
+      'Blue',
+      'Yellow'
+    ],
+    datasets: [{
+      label: 'Spended',
+      data: data,
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ],
+      hoverOffset: 4
+    }]
   };
 
+
+
   return (
+    <div id='chart_main_div'>
     <div className='chart_container'>
-      <h1>Your Analytics</h1>
+      <h2>Your Analytics</h2>
       <Line data={myData} options={options} />
     </div>
+    <div className='chart_container'>
+    <h2>Your Spendings</h2>
+      <Pie data={Piedata}/>
+    </div>
+    </div>
+
   );
 }
 
