@@ -53,7 +53,7 @@ function Dashboard() {
     };
     addTransaction(newTransaction);
   };
-  
+
   async function addTransaction(transaction) {
     try {
       const docRef = await addDoc(
@@ -88,7 +88,7 @@ function Dashboard() {
         transactionsArray.push(doc.data());
       });
       setTransactions(transactionsArray);
-      // console.log("trac", transactionsArray);
+      console.log("trac", transactionsArray);
       toast.success("Transactions Fetched!");
     }
     setLoading(false);
@@ -132,8 +132,9 @@ function Dashboard() {
             showIncomeModal={showIncomeModal}
             showExpenseModal={showExpenseModal}
           />
+
           {
-           transactions.length!=0? <Charts transactions={transactions} />:<NoTransactions/>
+            transactions.length !== 0 ? <Charts transactions={transactions} /> : <NoTransactions />
           }
 
           <AddIncomeModal
@@ -147,10 +148,10 @@ function Dashboard() {
             handleExpenseCancel={handleExpenseCancel}
             onFinish={onFinish}
           />
-         
 
-          <TransctionsTable 
-          transactions={transactions}
+
+          <TransctionsTable
+            transactions={transactions}
           />
         </>
       )}

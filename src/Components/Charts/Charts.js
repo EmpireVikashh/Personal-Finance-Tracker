@@ -4,22 +4,16 @@ import { CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js/aut
 
 function Chart({transactions}) {
   let labels = transactions.map((data)=>data.date)// for Date
-
-    // labels = labels.sort((a, b) => {
-    //   const dateA = new Date(a.split('-').reverse().join('-'));
-    //   const dateB = new Date(b.split('-').reverse().join('-'));
-    //   return dateA - dateB});
-
   const data = transactions.map((data)=>data.amount);//for amount
 
   console.log(labels,data);
 
   const myData = {
-    labels: labels,
+    labels: labels, // Accept only array form
     datasets: [
       {
         label: 'My First Dataset',
-        data: data,
+        data: data, // Accept only array form
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
@@ -42,6 +36,7 @@ function Chart({transactions}) {
 
   return (
     <div className='chart_container'>
+      <h1>Your Analytics</h1>
       <Line data={myData} options={options} />
     </div>
   );
