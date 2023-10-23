@@ -7,7 +7,13 @@ import { CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js/aut
 function Chart({transactions}) {
   let labels = transactions.map((data)=>data.date)// for Date
   const data = transactions.map((data)=>data.amount);//for amount
-  console.log(labels,data);
+  const Expdata = transactions.filter((data)=>{
+   if( data.type === "expense"){
+    return data.amount
+   }  
+  }).map((data=>data.amount));//for exp amount
+
+  console.log(labels,Expdata);
 
   
   const myData = {
@@ -38,19 +44,16 @@ function Chart({transactions}) {
 
   const Piedata = {
     labels: [
-      'Red',
-      'Blue',
-      'Yellow'
+      'Your Expense',
     ],
     datasets: [{
       label: 'Spended',
-      data: data,
+      data: Expdata,
       backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
+        'rgb(79, 205, 86)'
       ],
-      hoverOffset: 4
+      hoverOffset: 4,
+      borderColor:"Black"
     }]
   };
 
@@ -58,11 +61,11 @@ function Chart({transactions}) {
 
   return (
     <div id='chart_main_div'>
-    <div className='chart_container'>
+    <div className='chart_container line'>
       <h2>Your Analytics</h2>
       <Line data={myData} options={options} />
     </div>
-    <div className='chart_container'>
+    <div className='chart_container pie' >
     <h2>Your Spendings</h2>
       <Pie data={Piedata}/>
     </div>
