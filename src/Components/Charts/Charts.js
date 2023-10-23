@@ -5,22 +5,24 @@ import { Pie } from 'react-chartjs-2';
 import { CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js/auto'; // Import necessary Chart.js components
 
 function Chart({transactions}) {
+  const sortedTransactions = transactions.sort((a, b) => {
+      const dateA = new Date(`${a.date.split('-').reverse().join('-')}T00:00:00`);
+      const dateB = new Date(`${b.date.split('-').reverse().join('-')}T00:00:00`);
+      return dateA - dateB;
+    });
+  
+
+  console.log(sortedTransactions, "sorted");
+
   let labels = transactions.map((data)=>data.date)// for Date
   const data = transactions.map((data)=>data.amount);//for amount
-  const Expdata = transactions.filter((data)=>{
-   if( data.type === "expense"){
-    return data.amount
-   }  
-  }).map((data=>data.amount));//for exp amount
-
-  console.log(labels,Expdata);
 
   
   const myData = {
     labels: labels, // Accept only array form
     datasets: [
       {
-        label: 'My First Dataset',
+        label: 'Your Analysis',
         data: data, // Accept only array form
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
@@ -42,6 +44,14 @@ function Chart({transactions}) {
     },
   }; // Line end
 
+
+  const Expdata = transactions.filter((data)=>{
+    if( data.type === "expense"){
+     return data.amount
+    }  
+   }).map((data=>data.amount));//for exp amount
+ 
+
   const Piedata = {
     labels: [
       'Your Expense',
@@ -50,13 +60,33 @@ function Chart({transactions}) {
       label: 'Spended',
       data: Expdata,
       backgroundColor: [
-        'rgb(79, 205, 86)'
+        '#007DFF'
       ],
       hoverOffset: 4,
-      borderColor:"Black"
-    }]
+      // borderColor:"Black"
+    },]
   };
 
+  // Raw data
+  // https://www.chartjs.org/docs/latest/charts/doughnut.html#pie
+  // https://react-chartjs-2.js.org/docs/migration-to-v4/
+  // const data = {
+  //   labels: [
+  //     'Red',
+  //     'Blue',
+  //     'Yellow'
+  //   ],
+  //   datasets: [{
+  //     label: 'My First Dataset',
+  //     data: [300, 50, 100],
+  //     backgroundColor: [
+  //       'rgb(255, 99, 132)',
+  //       'rgb(54, 162, 235)',
+  //       'rgb(255, 205, 86)'
+  //     ],
+  //     hoverOffset: 4
+  //   }]
+  // };
 
 
   return (

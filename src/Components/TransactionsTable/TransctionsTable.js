@@ -54,9 +54,6 @@ function TransctionsTable({ transactions }) {
       return 0;
     }
   });
-  // console.log(sortedTransactions)
-
-
 
   return (
     
