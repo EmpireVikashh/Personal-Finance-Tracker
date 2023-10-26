@@ -41,14 +41,14 @@ function TransctionsTable({ transactions, addTransaction, fetchTransactions}) {
   
   let filteredTransactions = transactions.filter(
     (item) =>
-      item.name.toLowerCase().includes(search.toLowerCase()) &&
-      item.type.includes(typeFilter) 
+      item.name?.toLowerCase().includes(search.toLowerCase()) &&
+      item.type?.includes(typeFilter) 
   );
 
   const sortedTransactions = filteredTransactions.sort((a, b) => {
     if (sortKey === "date") {
-      const dateA = new Date(`${a.date.split('-').reverse().join('-')}T00:00:00`);
-      const dateB = new Date(`${b.date.split('-').reverse().join('-')}T00:00:00`);
+      const dateA = new Date(`${a.date?.split('-').reverse().join('-')}T00:00:00`);
+      const dateB = new Date(`${b.date?.split('-').reverse().join('-')}T00:00:00`);
       return dateA - dateB;
     }
      else if (sortKey === "amount") {
@@ -73,7 +73,9 @@ function TransctionsTable({ transactions, addTransaction, fetchTransactions}) {
               ...transaction,
               amount: parseInt(transaction.amount),
             };
-            await addTransaction(newTransaction, true);
+            if(newTransaction.type){ // if any aboject is null then dont added
+              await addTransaction(newTransaction, true);
+            }
           }
         },
       });
@@ -83,7 +85,7 @@ function TransctionsTable({ transactions, addTransaction, fetchTransactions}) {
     } catch (e) {
       toast.error(e.message);
     }
-  }
+  }//end
 
   // exportToCsv
   function exportToCsv() {
