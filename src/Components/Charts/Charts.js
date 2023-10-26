@@ -45,22 +45,42 @@ function Chart({transactions}) {
   }; // Line end
 
 
-  const Expdata = transactions.filter((data)=>{
-    if( data.type === "expense"){
-     return data.amount
+
+  // Pie chart
+   //for exp amount
+   let expArr = transactions.filter((data)=>{
+    return data.type === "expense";
+  }
+  );
+   const finalExpenseArray = new Array(3).fill(0);
+   for (let i = 0; i < expArr.length; i++) {
+    if(expArr[i].tag === "education"){
+      finalExpenseArray[0]  += expArr[i].amount
+    }
+    else if(expArr[i].tag === "food"){
+      finalExpenseArray[1]  += expArr[i].amount
     }  
-   }).map((data=>data.amount));//for exp amount
+    else if(expArr[i].tag === "office"){
+      finalExpenseArray[2]  += expArr[i].amount
+    }
+  }
+  console.log(finalExpenseArray);
+  
  
 
   const Piedata = {
     labels: [
-      'Your Expense',
+      'Education',
+      'Food',
+      'Office'
     ],
     datasets: [{
       label: 'Spended',
-      data: Expdata,
+      data: finalExpenseArray,
       backgroundColor: [
-        '#007DFF'
+        '#007DFF',
+        '#F4CF16',
+        '#16F4B1'
       ],
       hoverOffset: 4,
       // borderColor:"Black"

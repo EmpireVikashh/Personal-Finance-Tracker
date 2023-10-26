@@ -151,6 +151,8 @@ function Dashboard() {
 
           <TransctionsTable
             transactions={transactions}
+            addTransaction={addTransaction}
+            fetchTransactions={fetchTransactions}
           />
         </>
       )}
