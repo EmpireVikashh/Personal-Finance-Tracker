@@ -12,7 +12,7 @@ function Chart({transactions}) {
     });
   
 
-  console.log(sortedTransactions, "sorted");
+  // console.log(sortedTransactions, "sorted");
 
   let labels = transactions.map((data)=>data.date)// for Date
   const data = transactions.map((data)=>data.amount);//for amount
@@ -64,7 +64,7 @@ function Chart({transactions}) {
       finalExpenseArray[2]  += expArr[i].amount
     }
   }
-  console.log(finalExpenseArray);
+  // console.log(finalExpenseArray);
   
  
 

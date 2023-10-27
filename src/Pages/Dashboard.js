@@ -4,10 +4,10 @@ import Cards from "../Components/Cards/Cards";
 import AddExpenseModal from "../Components/Modals/AddExpenseModal";
 import AddIncomeModal from "../Components/Modals/AddIncomeModal";
 import { toast } from "react-toastify";
-import { addDoc, collection, getDocs, query } from "@firebase/firestore";
-import { auth, db } from "../firebase";
+import { addDoc, collection, getDocs, query,deleteDoc } from "@firebase/firestore";
+import { auth, db, doc } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-// import moment from "moment";
+// import { deleteDoc } from 'firebase/firestore';
 import TransctionsTable from "../Components/TransactionsTable/TransctionsTable";
 import Charts from "../Components/Charts/Charts";
 import NoTransactions from "../Components/NoTransactions/NoTransactions";
@@ -18,6 +18,7 @@ function Dashboard() {
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [docId , setDocId] = useState([]);
 
   // we have to add user data in form of array of object [{...},{...},{...}] like this
   const [transactions, setTransactions] = useState([]);
@@ -26,12 +27,12 @@ function Dashboard() {
   const [expenses, setExpenses] = useState(0);
 
   function showExpenseModal() {
-    console.log("show expence Model");
+    // console.log("show expence Model");
     setIsExpenseModalVisible(true);
   }
 
   function showIncomeModal() {
-    console.log("show Income Model");
+    // console.log("show Income Model");
     setIsIncomeModalVisible(true);
   }
 
@@ -60,14 +61,14 @@ function Dashboard() {
         collection(db, `users/${user.uid}/transactions`),
         transaction
       );
-      // console.log("Document written with ID: ", docRef.id);
+      console.log("Document written with ID: ", docRef);
       toast.success("Transaction Added!");
       let newArr = transactions;
       newArr.push(transaction);
       setTransactions(newArr); // when my transaction has updated then calculate function will be call
       calculateBalance();
     } catch (e) {
-      console.error("Error adding document: ", e);
+      // console.error("Error adding document: ", e);
       toast.error("Couldn't add transaction");
     }
   }
@@ -81,12 +82,19 @@ function Dashboard() {
     setLoading(true);
     if (user) {
       const q = query(collection(db, `users/${user.uid}/transactions`));
+      // console.log(q);
       const querySnapshot = await getDocs(q);
+      // console.log(querySnapshot);
       let transactionsArray = [];
+      let docID = []; // store Every document ID that will help us to delet doc
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         transactionsArray.push(doc.data());
+        if (doc.id){
+          docID.push(doc.id)
+        }
       });
+      setDocId(docID);
       setTransactions(transactionsArray);
       console.log("trac", transactionsArray);
       toast.success("Transactions Fetched!");
@@ -116,6 +124,26 @@ function Dashboard() {
     // console.log(income,expenses,currentBalance)
   };
 
+  
+  // Reset doc
+  console.log(docId);
+  const deletDoc = async () => {
+      const docRef = doc(db, `users/${user.uid}/transactions`, "bCAtx9SqexO2W9PCvW5i"); // Replace with your collection name and document ID
+      
+      try {
+        await deleteDoc(docRef);
+        console.log('Document successfully deleted.');
+      } catch (error) {
+        console.error('Error deleting document:', error);
+      }
+    }
+
+    const reset = docId.forEach((mydoc)=>{
+      deletDoc(mydoc)
+    })
+  
+    
+
   return (
     <div>
       <Header />
@@ -128,6 +156,7 @@ function Dashboard() {
             income={income}
             expenses={expenses}
             currentBalance={currentBalance}
+            reset ={reset}
             showIncomeModal={showIncomeModal}
             showExpenseModal={showExpenseModal}
           />

@@ -29,7 +29,7 @@ const SignupSigninComponent = () => { // Main function
           .then((userCredential) => {
             // Signed up 
             const user = userCredential.user;
-            console.log("user>>>", user);
+            // console.log("user>>>", user);
             toast.success("User Created!")
             setLoading(false);
             setName("");
@@ -43,7 +43,7 @@ const SignupSigninComponent = () => { // Main function
             const errorCode = error.code;
             const errorMessage = error.message;
             toast.error(errorMessage)
-            console.log(errorMessage, errorCode);
+            // console.log(errorMessage, errorCode);
             setLoading(false);
           });
       } else {
@@ -68,7 +68,7 @@ const SignupSigninComponent = () => { // Main function
       toast.success("Login Successfully");
       setEmail("");
       setPassword("");
-      console.log(user)
+      // console.log(user)
       setLoading(false)
       // createDoc(user)
       navigate("/dashboard");
@@ -76,7 +76,7 @@ const SignupSigninComponent = () => { // Main function
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(errorMessage, errorCode);
+      // console.log(errorMessage, errorCode);
       toast.error(errorMessage)
       setLoading(false)
     });
@@ -100,8 +100,8 @@ const SignupSigninComponent = () => { // Main function
     const user = result.user;
     // IdP data available using getAdditionalUserInfo(result)
     // ...
-    console.log(token)
-    console.log("user>>>", user)
+    // console.log(token)
+    // console.log("user>>>", user)
     createDoc(user);
     setLoading(false)
     toast.success("Signup Succesfully")
@@ -110,7 +110,7 @@ const SignupSigninComponent = () => { // Main function
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
-    console.log(errorMessage,errorCode)
+    // console.log(errorMessage,errorCode)
     toast.error(errorMessage,errorCode)
     setLoading(false)
   });
@@ -126,11 +126,12 @@ const SignupSigninComponent = () => { // Main function
     setLoading(true)
     if(!user)return;
 
+    // console.log(user);
 
     const userRef = doc(db, "users", user.uid);
     const userData= await getDoc(userRef);
     const createdAt = new Date();
-    console.log(createdAt);
+    // console.log(userData  );
 
     if(!userData.exists()){ // if user does'nt exist then do it 
       try{
@@ -145,7 +146,7 @@ const SignupSigninComponent = () => { // Main function
         setLoading(false)
       }
       catch(e){
-        console.log(e);
+        // console.log(e);
         toast.error(e.message);
         setLoading(false)
       }
