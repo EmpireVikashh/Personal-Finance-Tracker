@@ -61,12 +61,13 @@ function Dashboard() {
         collection(db, `users/${user.uid}/transactions`),
         transaction
       );
-      console.log("Document written with ID: ", docRef);
+      // console.log("Document written with ID: ", docRef);
       toast.success("Transaction Added!");
       let newArr = transactions;
       newArr.push(transaction);
       setTransactions(newArr); // when my transaction has updated then calculate function will be call
       calculateBalance();
+      fetchTransactions();
     } catch (e) {
       // console.error("Error adding document: ", e);
       toast.error("Couldn't add transaction");
@@ -96,7 +97,7 @@ function Dashboard() {
       });
       setDocId(docID);
       setTransactions(transactionsArray);
-      console.log("trac", transactionsArray);
+      // console.log("trac", transactionsArray);
       toast.success("Transactions Fetched!");
     }
     setLoading(false);
@@ -126,21 +127,24 @@ function Dashboard() {
 
   
   // Reset doc
-  console.log(docId);
-  const deletDoc = async () => {
-      const docRef = doc(db, `users/${user.uid}/transactions`, "bCAtx9SqexO2W9PCvW5i"); // Replace with your collection name and document ID
-      
+  
+  const deletDoc = async (mydoc) => {
+    console.log(mydoc);
+      const docRef = doc(db, `users/${user.uid}/transactions`, mydoc); // Replace with your collection name and document ID
       try {
         await deleteDoc(docRef);
+        fetchTransactions();
         console.log('Document successfully deleted.');
       } catch (error) {
         console.error('Error deleting document:', error);
       }
     }
 
-    const reset = docId.forEach((mydoc)=>{
+    function reset(){
+      docId.forEach((mydoc)=>{
       deletDoc(mydoc)
     })
+  }
   
     
 
